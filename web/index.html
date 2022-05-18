@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Python API Example, Graphs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="uPlot/uPlot.min.css">
+</head>
+
+<body>
+    <form>
+        URL of the API server:
+        <br>
+        <input type="text">
+        <br>
+        <br>
+        JSON to process
+        <br>
+        <textarea></textarea>
+        <br>
+        <br>
+        <input type="button" value="Graph it" onclick="return graphIt();">
+    </form>
+    <br>
+    <br>
+    <div id="graph"></div>
+</body>
+
+</html>
+<script src="uPlot/uPlot.iife.min.js"></script>
+<script>
+    let data = [
+        // Timestamps
+        [1546300800, 1546387200, 1546480000, 1546580000],
+
+        // Values
+        [35, 71, 50, 100],
+    ]
+
+    let opts = {
+        title: "Example Chart",
+        id: "graph",
+        class: "my-chart",
+        width: 800,
+        height: 600,
+        series: [
+            {},
+            {
+                // initial toggled state (optional)
+                show: true,
+
+                spanGaps: false,
+
+                // in-legend display
+                label: "RAM",
+                value: (self, rawValue) => "$" + rawValue.toFixed(2),
+
+                // series style
+                stroke: "red",
+                width: 1,
+                fill: "rgba(255, 0, 0, 0.3)",
+                dash: [10, 5],
+            }
+        ],
+    }
+
+    function graphIt() {
+        // Submit the JSON of the report
+
+        // For my service I choose to send in unsorted JSON with lots of timestamps
+        // and I want returned properly sorted and ready to graph data in format uplot
+        // supports.
+
+        // Get the ID of the report assigned by the system
+        // Get the report, retrying until it is available
+        // Graph the data in the report
+
+        // Can log stuff in the ui in the form of:
+        //
+        // ✳️ Submitting
+        // ✅ Submitted
+        // ✅ ID assigned: ID
+        // ✳️ Getting report: ID
+        // ✅ Report fetched: ID
+        // ✳️ Graphing
+        // ✅ Done
+        //
+        // It is verbose but that is alright for this example
+
+        // Example plot to be replaced with a real one.
+        let uplot = new uPlot(opts, data, document.body);
+    }
+</script>
