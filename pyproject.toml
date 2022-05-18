@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "pyapid"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = "^0.17.6"
+fastapi = "^0.75.2"
+structlog = "^21.5.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.1"
+httpie = "^3.1.0"
+pylama = "^8.3.8"
+black = "^22.3.0"
+pyflakes = "^2.4.0"
+mypy = "^0.942"
+hypothesis = "^6.44.0"
+pycodestyle = "^2.8.0"
+pylint = "^2.13.7"
+requests = "^2.27.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
