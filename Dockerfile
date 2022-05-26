@@ -23,8 +23,7 @@ RUN poetry config virtualenvs.create false \
     && poetry install $(test "$BUILD_ENV" == production && echo "--no-dev") --no-interaction --no-ansi
 
 # Creating folders, and files for a project:
-COPY . /app
+COPY . /code
 
-WORKDIR /app
 EXPOSE 8000
-CMD ["poetry run uvicorn pyapid.api:app --port 8000 --workers 4"]
+CMD poetry run uvicorn pyapid.api:app --port 8000 --workers 4
