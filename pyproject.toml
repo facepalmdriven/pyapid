@@ -9,6 +9,10 @@ python = "^3.10"
 uvicorn = "^0.17.6"
 fastapi = "^0.75.2"
 structlog = "^21.5.0"
+prometheus-client = "^0.14.1"
+opentelemetry-sdk = "^1.11.1"
+yfinance = "^0.1.70"
+
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.1"
@@ -21,6 +25,8 @@ hypothesis = "^6.44.0"
 pycodestyle = "^2.8.0"
 pylint = "^2.13.7"
 requests = "^2.27.1"
+ipython = "^8.3.0"
+pytest-cov = "^3.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

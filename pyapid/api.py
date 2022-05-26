@@ -1,36 +1,42 @@
-from typing import Optional
+"""
+Main file, routes are here, this is what the app server will load and run.
 
-from fastapi import FastAPI
-from pydantic import BaseModel
+TODO: Can we do this without the global?
+"""
 
-import pyapid.json as json
+from fastapi import FastAPI, HTTPException
+from starlette.status import HTTP_201_CREATED, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
+from pyapid.types import Data, PyapidParseError
 import pyapid.reports as reports
 
 
 app = FastAPI()
 
 
-# TODO: Do we even need this?
-class Report(BaseModel):
-    name: str
-    price: float
-    is_offer: Optional[bool] = None
-
-
-# TODO: Get all reports
 @app.get("/")
 @app.get("/reports")
 def get_all_reports():
-    pass
+    result = reports.get()
+
+    if result:
+        return result
+    else:
+        raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="No reports found.")
 
 
-# TODO: Get a specific report
 @app.get("/reports/{report_id}")
-def get_report(report_id: int, q: Optional[str] = None):
-    return json.dump(reports.get(report_id))
+def get_report(report_id: str):
+    result = reports.get(report_id)
+
+    if result:
+        return result
+    else:
+        raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Report not found")
 
 
-# TODO: Create a report
-@app.post("/reports/create")
-def update_report(report_id: int, data: Report):
-    return {"item_name": item.name, "item_id": item_id}
+@app.post("/reports/create", status_code=HTTP_201_CREATED)
+def update_report(data: Data):
+    try:
+        return reports.create(data)
+    except PyapidParseError:
+        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Bad query")

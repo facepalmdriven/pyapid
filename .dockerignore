@@ -1,0 +1,6 @@
+.vscode
+.git
+.pytest_cache
+.hypothesis
+.idea
+.coverage

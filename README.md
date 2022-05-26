@@ -146,6 +146,44 @@ If you want to do exploratory API testing, [Insomnia](https://insomnia.rest) is 
 
 
 
+## Mocking
+
+It is important to test the right thing. We want to test our stuff, not third party stuff, that should have it's own tests. Sometimes more control over the values of attributes, objects and environment variables is required, and in some cases it is required to present sepcific filesystem views. All of this is supported using following tools, to name a few:
+
+- https://jmcgeheeiv.github.io/pyfakefs/release/usage.html
+- https://docs.python.org/3/library/unittest.mock.html
+- https://docs.pytest.org/en/6.2.x/monkeypatch.html
+- https://docs.pytest.org/en/6.2.x/tmpdir.html
+
+When working with SQLite it is also possible to specify `:memory:` as the database to keep the databse in memory, quite handy for testing.
+
+API tests require mocking the http requests / responses, but it is actually more practical to just serve the requests over a mock instance. Some tools at our disposal for this are:
+
+- https://fastapi.tiangolo.com/tutorial/testing/
+- https://github.com/csernazs/pytest-httpserver
+
+Of course this all works great with Pytest, which is waht you should always use.
+
+
+
+## Coverage
+
+There are two types of coverage that we need to be aware of, coverage of application functionality and coverage of code.
+
+Coverage can be a very helpful, easy to grasp measure of software quality. For this reason it is often used in all sorts of companies from startups to large enterprises.
+
+70% and higher coverage is usually a sign that software is well maintained, and is reliable. However, it is easy to [misuse](http://www.exampler.com/testing-com/writings/coverage.pdf) coverage metrics.
+
+> If you make a certain level of coverage a target, people will try to attain it. The trouble is that high coverage numbers are too easy to reach with low quality testing.
+>
+>   -- Martin Fowler, [TestCoverage](https://martinfowler.com/bliki/TestCoverage.html)
+
+Like any other kind of test, coverage is just a tool in the quest of improving sotware quality, it is not a goal in itself.
+
+In this project we measure coverage using [Pytest-cov](https://pytest-cov.readthedocs.io/en/latest/) plugin, along with Poetry.
+
+
+
 ## Shipt it!
 
 Once we have everything working, it is important to also have at least some basic understanding of how the actual project would be shipped for production. How do we generate the final artifact? How do we deploy it? These are questions that can be much harder than actually implementing a simple service.
@@ -343,3 +381,53 @@ It is nice to see the status of build, code, compliance and so on right on the p
 If you have suggestions, questions, or any other queries - You can open an issue on this repo, or send a PR.
 
 Thanks and good luck!
+
+
+
+## TODO
+
+- Test the reports module.
+- Do something more interesting and meaningful than fetching stock info, which one can easily do directly.
+- Make this properly production ready.
+- Include more information about what professional hosting for this might look like.
+- Add distributed tracing support.
+- Consider caching API requests in the database.
+- Improve the tests, there is a lot of room for refactoring.
+- Add more comments.
+- Improve README, CONTRIBUTING, the CLA etc.
+- Figure out why mock is creating files in the project directory when running pytest.
+- Improve Dockerfile
+
+
+## How to run stuff
+
+Clone it, then install and test:
+
+```zsh
+poetry install
+
+poetry run pytest -vv --cov
+```
+
+To run the app cd into the project directory and:
+
+```zsh
+poetry run uvicorn pyapid.api:app --reload
+```
+
+If you want multiple workers append `--workers 4` to that or similar.
+
+
+To build with Docker simply cd into the project directory and:
+
+```zsh
+docker build . -t pyapid:latest
+```
+
+To run the resulting image:
+
+```zsh
+docker run pyapid:latest
+```
+
+You can append arguments to that, they will get passed to `uvicorn`. Look in `Dockerfile` for more hints.
