@@ -9,7 +9,6 @@ from starlette.status import (
 )
 import pytest
 
-from pyapid.types import PyapidParseError
 from pyapid.api import app
 
 
