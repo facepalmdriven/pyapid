@@ -43,7 +43,7 @@ def test_inserting_a_record(temp_db):
         # Working query
         r = http.post(
             "/reports/create",
-            json={"stock": "avgo", "start": "2020-01-01", "end": "2020-01-02"},
+            json={"stock": "avgo", "start": "2020-01-10", "end": "2020-01-11"},
         )
         assert r.status_code == HTTP_201_CREATED
 
