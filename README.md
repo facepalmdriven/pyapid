@@ -7,6 +7,36 @@ It might seem outright impossible if you are a beginner, in which casae you are 
 This repo aims to demonstrate some, just some, of the many ways this can be done, in a beginner friendly way that is easy to follow and recreate.
 
 
+## Table of contents
+- [A demo Python REST API project showing how to write a small microservice while avoiding some common mistakes](#a-demo-python-rest-api-project-showing-how-to-write-a-small-microservice-while-avoiding-some-common-mistakes)
+  - [Table of contents](#table-of-contents)
+  - [Caveat emptor](#caveat-emptor)
+  - [Handling and serving the API](#handling-and-serving-the-api)
+  - [Data processing](#data-processing)
+  - [Database](#database)
+  - [Good REST API design](#good-rest-api-design)
+  - [Not blocking the main thread](#not-blocking-the-main-thread)
+  - [Structured Logging](#structured-logging)
+  - [Metrics](#metrics)
+  - [Documentation](#documentation)
+  - [Unit tests](#unit-tests)
+  - [API tests](#api-tests)
+  - [Mocking](#mocking)
+  - [Coverage](#coverage)
+  - [Shipt it!](#shipt-it)
+    - [Manage it](#manage-it)
+    - [Update it](#update-it)
+    - [Secure it](#secure-it)
+    - [Package it](#package-it)
+    - [Host and deploy it](#host-and-deploy-it)
+      - [VPS](#vps)
+      - [Deploy to AWS Lambda](#deploy-to-aws-lambda)
+      - [Deploy it somewhere else](#deploy-it-somewhere-else)
+    - [Put a badge on it](#put-a-badge-on-it)
+  - [That is all folks](#that-is-all-folks)
+  - [Opportunities for improvement](#opportunities-for-improvement)
+  - [How to run stuff](#how-to-run-stuff)
+
 
 ## Caveat emptor
 
@@ -384,19 +414,29 @@ Thanks and good luck!
 
 
 
-## TODO
+## Opportunities for improvement
 
-- Test the reports module.
-- Do something more interesting and meaningful than fetching stock info, which one can easily do directly.
-- Make this properly production ready.
-- Include more information about what professional hosting for this might look like.
-- Add distributed tracing support.
-- Consider caching API requests in the database.
-- Improve the tests, there is a lot of room for refactoring.
-- Add more comments.
-- Improve README, CONTRIBUTING, the CLA etc.
-- Figure out why mock is creating files in the project directory when running pytest.
-- Improve Dockerfile
+TODO: Test the reports module.
+
+TODO: Do something more interesting and meaningful than fetching stock info, which one can easily do directly.
+
+TODO: Make this properly production ready.
+
+TODO: Include more information about what professional hosting for this might look like.
+
+TODO: Add distributed tracing support.
+
+TODO: Consider caching API requests in the database.
+
+TODO: Improve the tests, there is a lot of room for refactoring.
+
+TODO: Add more comments.
+
+TODO: Improve README, CONTRIBUTING, the CLA etc.
+
+TODO: Figure out why mock is creating files in the project directory when running pytest.
+
+TODO: Improve Dockerfile
 
 
 ## How to run stuff
