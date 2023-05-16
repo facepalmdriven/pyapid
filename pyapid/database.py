@@ -17,10 +17,16 @@ def init():
     Returns the connection.
     """
 
-    q = (
-        "CREATE TABLE IF NOT EXISTS reports "
-        "(id INTEGER PRIMARY KEY, uuid TEXT, stock TEXT, start INTEGER, end INTEGER, data TEXT, modified_at INTEGER)"
-    )
+    q = """
+    CREATE TABLE IF NOT EXISTS reports (
+        id INTEGER PRIMARY KEY,
+        uuid TEXT,
+        stock TEXT,
+        start INTEGER,
+        end INTEGER,
+        data TEXT,
+        modified_at INTEGER
+    )"""
 
     con = sql.connect(config().db)
     con.execute(q)
@@ -57,10 +63,9 @@ def insert(stock, start, end, data, uuid=None):
     Insert a new report into the database.
     """
 
-    q = (
-        "INSERT INTO reports (uuid, stock, start, end, data, modified_at) "
-        "VALUES (?, ?, ?, ?, ?, ?)"
-    )
+    q = """
+    INSERT INTO reports (uuid, stock, start, end, data, modified_at)
+    VALUES (?, ?, ?, ?, ?, ?)"""
 
     uuid = uuid or str(uuid4())
     modified_at = int(datetime.now().timestamp())
