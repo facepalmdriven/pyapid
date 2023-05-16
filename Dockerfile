@@ -26,4 +26,5 @@ RUN poetry config virtualenvs.create false \
 COPY . /code
 
 EXPOSE 8000
+USER non-root
 CMD poetry run uvicorn pyapid.api:app --port 8000 --workers 4
