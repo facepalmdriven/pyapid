@@ -102,17 +102,25 @@ Correct API design is important, and it is not hard, especially for simpler APIs
 
 ## Not blocking the main thread
 
-Threading in Python is still mostly to be avoided, the battle tested [multiprocessing](https://docs.python.org/3/library/multiprocessing.html) module is preferential almost in every situation, except IO bound work. The GIL is still very much there, and the [latest efforts from Microsoft](https://github.com/colesbury/nogil) to remove it have not yet made it to the mainline.
+Threading in Python is still mostly to be avoided, the battle tested [multiprocessing](https://docs.python.org/3/library/multiprocessing.html) module is preferential almost in every situation, except for IO bound work. The GIL is still very much there, and the [latest efforts from Microsoft](https://github.com/colesbury/nogil) to remove it have not yet made it to the mainline.
 
-There is a relatively newer kid on the Python block, in the form of [asyncio](https://docs.python.org/3/library/asyncio.html). Writing asynchronous code is not easy, multiprocessing is usually easier for beginners.
+There is a relatively newer kid on the Python block, in the form of [asyncio](https://docs.python.org/3/library/asyncio.html). But keep in mind, writing asynchronous code is not easy, multiprocessing is usually easier for beginners.
 
 FastAPI has good [support for async](https://fastapi.tiangolo.com/async/), so in cases when it is needed, you should definitely consider using it.
 
 There also is [Twisted](https://www.twistedmatrix.com/trac/) of course. But I have personally never used it, so cannot talk much about it.
 
-Personally, I still find the Python / TypeScript `async / await` style of writing async code ugly and cumbersome and much prefer the approaches in Go ([fancier CSP](https://stackoverflow.com/a/32696464/4669203) but avoid channels for the most part, although channels are nicer now after the [addition of Generics](https://go.dev/doc/tutorial/generics) to Go), Zig ([async / await but done better](https://kristoff.it/blog/zig-colorblind-async-await/)) and especially [Erlang/OTP](https://www.erlang.org) or [Elixir](https://elixir-lang.org). In general writing correct concurrent code is very difficult, and many studies have shown that one or another approach changes this very little, in my mind it remains one of the things that are strongly affected by one's style, but it is never as simple as that because one does not produce great software alone, most of the time. To quote Robert L. Read:
+I still find the Python / TypeScript `async / await` style of writing async code ugly and cumbersome and much prefer the Go approach of [fancier CSP](https://stackoverflow.com/a/32696464/4669203) and their `sync` package, but frankly tend to avoid channels for the most part even though they are nicer to use now after the [addition of Generics](https://go.dev/doc/tutorial/generics).
+
+I also quite like Zig's ([async / await but "done better"](https://kristoff.it/blog/zig-colorblind-async-await/)) and especially [Erlang/OTP](https://www.erlang.org) or [Elixir](https://elixir-lang.org).
+
+In general, writing correct concurrent code is very difficult, and many studies have shown that various approaches change this very little, if at all, in my mind it remains one of the things that are most strongly affected by one's own style, but it is never as simple as that because one does not usually produce great software alone.
 
 > To be a good programmer is difficult and noble. The hardest part of making real a collective vision of a software project is dealing with one's coworkers and customers. Writing computer programs is important and takes great intelligence and skill. But it is really child's play compared to everything else that a good programmer must do to make a software system that succeeds for both the customer and myriad colleagues for whom she is partially responsible.
+>
+> -- Robert L. Read, [How to become a Programmer](https://www.reed.co.uk/career-advice/how-to-become-a-programmer/)
+
+TODO: Cover async some more, it is an important topic
 
 
 
@@ -158,11 +166,11 @@ It is also exteremely easy to test documentation both [in Python](https://docs.p
 
 ## Unit tests
 
-Modern python testing means using [Pytest](), the excellent framework that makes writing tests a joy. If you don't already know about Pytest, you stop doing whatever else you are doing and learn more about it!
+Modern python testing means using the excellent framework that makes writing tests a joy, the magnificent [Pytest](https://docs.pytest.org). If you don't already know about it, you stop doing whatever else you are doing and learn more about it.
 
-Pytest integrates nicely wit VC Code, PyCharm and many other IDEs, has an extensive plugin ecosystem and can be used effectively from CLI too.
+VC Code, PyCharm and many other IDEs integrate with Pytest nicely, it also has an extensive plugin ecosystem, and can be used effectively from CLI.
 
-Writing test is important, fun, and noble, but it is not the end of the story. For example consider looking into [Atheris](https://github.com/google/atheris/) and [Hypothesis](https://hypothesis.readthedocs.io). Once again Go actually has Python beat here, as there is excellent automatic fuzzing [support in the standard toolchain](https://go.dev/doc/tutorial/fuzz).
+Writing tests is important, fun, and noble, but it is not the end of the story. For example consider looking into [Atheris](https://github.com/google/atheris/) and [Hypothesis](https://hypothesis.readthedocs.io). Once again Go actually has Python beat here, as there is excellent automatic fuzzing [support in the standard toolchain](https://go.dev/doc/tutorial/fuzz).
 
 
 
@@ -200,7 +208,7 @@ Of course this all works great with Pytest, which is waht you should always use.
 
 There are two types of coverage that we need to be aware of, coverage of application functionality and coverage of code.
 
-Coverage can be a very helpful, easy to grasp measure of software quality. For this reason it is often used in all sorts of companies from startups to large enterprises.
+Coverage can be a very helpful, easy to grasp measure of software quality. For this reason it is often used in all sorts of companies from stawe discurtups to large enterprises.
 
 70% and higher coverage is usually a sign that software is well maintained, and is reliable. However, it is easy to [misuse](http://www.exampler.com/testing-com/writings/coverage.pdf) coverage metrics.
 
@@ -226,11 +234,11 @@ Let's have a look at a setup tailored to be very simple and also cheap.
 
 ### Manage it
 
-A very important aspect of any serious project is establishing a high quality, cohesive style for the project that help ensure everyone is on the same page. In Go code styling is a solved problem, thanks to `gofmt` and in broader context [golangci-lint](https://golangci-lint.run/usage/linters/) with all its integrated linters.
+A very important aspect of any serious project is establishing a high quality, cohesive style for the project that helps ensure everyone is on the same page. In Go code styling is mostly a solved problem, thanks to `gofmt`, community [best-practice and style guides](https://google.github.io/styleguide/go/), and in a broader context [golangci-lint](https://golangci-lint.run/usage/linters/) with all its integrated linters.
 
 But Python world has started catching up as well, there is [Pylama](https://github.com/klen/pylama) which also integrates with various linters / checkers, and of course there is [Black](https://black.readthedocs.io/en/stable/) for formatting the code.
 
-The sane thing to do is make sure this tools are run on save in your IDE or editor of choice. The bare minimum would be running them as part of the build, or as [Git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks), or even better all three!
+The sane thing to do is make sure these tools are run on save in your IDE or editor of choice. The bare minimum would be running them as part of the build, or as [Git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks), or even better all three!
 
 Using this tooling you will not only solve most style discussions, but also aviod many scenarios that result in inferior code.
 
@@ -346,7 +354,7 @@ Thanks to this your project will receive automatic pull requests when updates ar
 
 Of course, it is important to have proper testing in place for these pull requests, without automated testing this can become very hard to manage.
 
-To avoid dependency hell, a good strategy is to keep your dependencies minimal, updating the language runtime with it the standard library is significantly easier than updating the whole dependency graph. It is OK to take the easy path as a beginner and just use the libraries, but as one learns and grows it is important to understand that dependencies are rarely optimized for _your specific usecase_. It is important to _know what your specific use case is_ and then to judge whether implementing something that solves it 100% for you, not 80% or 200%, will result in simpler code, fewer dependencies, easier long term maintenance and so on.
+To avoid dependency hell, a good strategy is to keep your dependencies minimal, updating the runtime and the standard library is significantly easier than updating the whole dependency graph. It is OK to take the easy path as a beginner and just use the libraries, but as one learns and grows it is important to understand that dependencies are rarely optimized for _your specific usecase_. It is important to _know what your specific use case is_ and then to judge whether implementing something that solves it 100% for you, not 80% or 200%, will result in simpler code, fewer dependencies, easier long term maintenance and so on.
 
 This practice is unfortunately rarely followed in Python, but it is [pretty popular in Go](https://go.dev/doc/articles/wiki/). This has also to do with the fact that [Go](https://pkg.go.dev/std) and [Python](https://docs.python.org/3/library/) standard libraries have very different focus. This is alright, the languages are different, and a thing that is idiomatic in one language is not neccessarily in another.
 
@@ -420,7 +428,7 @@ TODO: Test the reports module.
 
 TODO: Do something more interesting and meaningful than fetching stock info, which one can easily do directly.
 
-TODO: Make this properly production ready.
+TODO: Make this "properly production ready".
 
 TODO: Include more information about what professional hosting for this might look like.
 
@@ -437,6 +445,23 @@ TODO: Improve README, CONTRIBUTING, the CLA etc.
 TODO: Figure out why mock is creating files in the project directory when running pytest.
 
 TODO: Improve Dockerfile
+
+TODO: Expand the [Ship it!](#shipt-it) section.
+
+TODO: Add a "Monitor it!" or similarly named section that covers operations at least bit.
+
+TODO: Cover locking.
+
+TODO: Cover idempotence.
+
+TODO: Cover distributed consensus.
+
+TODO: Cover HA/DR and other important operational concepts.
+
+TODO: Cover ADRs.
+
+TODO: Fix the config cache bug.
+
 
 
 ## How to run stuff
