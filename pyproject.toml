@@ -13,11 +13,11 @@ prometheus-client = "^0.14.1"
 opentelemetry-sdk = "^1.11.1"
 yfinance = "^0.1.70"
 
-
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.267"
 pytest = "^7.1.1"
 httpie = "^3.1.0"
-pylama = "^8.3.8"
+pylama = "^8.4.1"
 black = "^22.3.0"
 pyflakes = "^2.4.0"
 mypy = "^0.942"
@@ -25,7 +25,7 @@ hypothesis = "^6.44.0"
 pycodestyle = "^2.8.0"
 pylint = "^2.13.7"
 requests = "^2.27.1"
-ipython = "^8.3.0"
+ipython = "^8.9.0"
 pytest-cov = "^3.0.0"
 
 [build-system]
