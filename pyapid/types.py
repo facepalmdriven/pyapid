@@ -17,15 +17,17 @@ class Data(BaseModel):
     end: date
 
     @staticmethod
-    def parse_date(str_date):
+    def parse_date(str_date: str) -> datetime:
         return datetime.strptime(str_date, "%Y-%m-%d").date()
 
     @validator("start", pre=True)
-    def parse_start_date(cls, value):
+    @classmethod
+    def parse_start_date(cls, value: str) -> datetime:
         return Data.parse_date(value)
 
     @validator("end", pre=True)
-    def parse_end_date(cls, value):
+    @classmethod
+    def parse_end_date(cls, value: str) -> datetime:
         return Data.parse_date(value)
 
 

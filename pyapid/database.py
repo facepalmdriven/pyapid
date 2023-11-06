@@ -17,7 +17,7 @@ def init():
     Returns the connection.
     """
 
-    q = """
+    query = """
     CREATE TABLE IF NOT EXISTS reports (
         id INTEGER PRIMARY KEY,
         uuid TEXT,
@@ -29,7 +29,7 @@ def init():
     )"""
 
     con = sql.connect(config().db)
-    con.execute(q)
+    con.execute(query)
     con.commit()
 
     return con
@@ -40,20 +40,20 @@ def select(uuid=None) -> list[dict]:
     Run a specified SQL query against the database.
     """
 
-    q = "SELECT uuid, stock, start, end, data FROM reports"
-    c = init().cursor()
+    query = "SELECT uuid, stock, start, end, data FROM reports"
+    cursor = init().cursor()
 
     if uuid is not None:
-        q += " WHERE uuid = ?"
-        c = c.execute(q, (uuid,))
+        query += " WHERE uuid = ?"
+        cursor = cursor.execute(query, (uuid,))
     else:
-        c = c.execute(q)
+        cursor = cursor.execute(query)
 
-    columns = [r[0] for r in c.description]
+    columns = [r[0] for r in cursor.description]
     data = []
 
-    while r := c.fetchone():
-        data.append(dict(zip(columns, r)))
+    while record := cursor.fetchone():
+        data.append(dict(zip(columns, record)))
 
     return data
 
@@ -63,7 +63,7 @@ def insert(stock, start, end, data, uuid=None):
     Insert a new report into the database.
     """
 
-    q = """
+    query = """
     INSERT INTO reports (uuid, stock, start, end, data, modified_at)
     VALUES (?, ?, ?, ?, ?, ?)"""
 
@@ -71,7 +71,9 @@ def insert(stock, start, end, data, uuid=None):
     modified_at = int(datetime.now().timestamp())
     con = init()
 
-    con.cursor().execute(q, (uuid, stock, start, end, json.dumps(data), modified_at))
+    con.cursor().execute(
+        query, (uuid, stock, start, end, json.dumps(data), modified_at)
+    )
     con.commit()
 
     return select(uuid)
