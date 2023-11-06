@@ -11,8 +11,8 @@ class Config:
     Get values from environment variables, or use defaults.
     """
 
-    default_db: str = ":memory:"
-    default_debug: str = False
+    default_db = ":memory:"
+    default_debug = False
 
     def __init__(self):
         self.db: str = getenv("PYAPID_DB", Config.default_db)
