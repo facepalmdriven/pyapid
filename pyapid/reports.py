@@ -8,7 +8,7 @@ import pyapid.database as db
 from pyapid.types import Data, PyapidParseError
 
 
-def fetch_data(d: Data) -> dict:
+def fetch_data(data: Data) -> dict:
     """
     Get data for the report.
 
@@ -17,23 +17,16 @@ def fetch_data(d: Data) -> dict:
 
     # This results in a Pandas DataFrame
     ticker = yf.download(
-        d.stock, start=d.start, end=d.end, progress=False, show_errors=False
+        data.stock, start=data.start, end=data.end, progress=False, show_errors=False
     )
 
     if ticker.empty:
         raise PyapidParseError("Could not get the data based on the query")
 
-    timestamps = []
-    data = []
-
-    for t, r in ticker.iterrows():
-        timestamps.append(t.timestamp())
-        data.append(r.to_json())
-
-    return (timestamps, data)
+    return tuple(list(res) for res in zip(*ticker.iterrows()))
 
 
-def create(d: Data) -> list[dict]:
+def create(data: Data) -> list[dict]:
     """
     Generate a new report.
 
@@ -42,12 +35,9 @@ def create(d: Data) -> list[dict]:
     checked by the Data class.
     """
 
-    try:
-        timestamps, data = fetch_data(d)
-    except PyapidParseError:
-        raise
+    timestamps, data = fetch_data(data)
 
-    return db.insert(d.stock, d.start, d.end, [timestamps, data])
+    return db.insert(data.stock, data.start, data.end, [timestamps, data])
 
 
 def get(uuid=None) -> dict:
