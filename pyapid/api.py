@@ -8,7 +8,10 @@ from fastapi import FastAPI, HTTPException
 from starlette.status import HTTP_201_CREATED, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
 from pyapid.types import Data, PyapidParseError
 import pyapid.reports as reports
+from pyapid.config import config
 
+# Call config to make sure we are caching the values in the very begining
+config()
 
 app = FastAPI()
 
